@@ -1,6 +1,7 @@
 #!/usr/bin/python3
 import uuid
 from datetime import datetime
+import models
 
 class BaseModel:
     """
@@ -19,17 +20,20 @@ class BaseModel:
         Args:
             kwargs: Dictionary containing attributes to initialize the instance.
         """
+        self.id = str(uuid.uuid4())
+        self.created_at = datetime.now()
+        self.updated_at = datetime.now()
+
         if kwargs:
             for key, value in kwargs.items():
-                if key != '__class__':
-                    if key in ['created_at', 'updated_at']:
-                        value = datetime.strptime(value, '%Y-%m-%dT%H:%M:%S.%f')
-                    setattr(self, key, value)
+                if key in ['created_at', 'updated_at']:
+                        self.__dict__[value] = datetime.strptime(value, '%Y-%m-%dT%H:%M:%S.%f')
+                else:
+                     self.__dict__[key] = value
+        
         else:
-            self.id = str(uuid.uuid4())
-            self.created_at = datetime.now()
-            self.updated_at = datetime.now()
-
+             models.storage.new(self)
+            
     def __str__(self):
         """
         Returns a string representation of the BaseModel instance.
@@ -37,14 +41,14 @@ class BaseModel:
         Returns:
             str: String representation of the BaseModel instance.
         """
-        return "[{}] ({}) {}".format(
-            type(self).__name__, self.id, self.__dict__)
+        return "[{}] ({}) {}".format(type(self).__name__, self.id, self.__dict__)
 
     def save(self):
         """
         Updates the updated_at attribute with the current datetime.
         """
         self.updated_at = datetime.now()
+        models.storage.save()
 
     def to_dict(self):
         """
