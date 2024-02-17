@@ -1,0 +1,17 @@
+header {
+    color: white;
+    height: 70px;
+    width: 100%;
+    border-bottom: 1px solid #CCCCCC;
+}
+
+.logo {
+    width: 200px; /* Adjust width as needed */
+    height: 100%; /* To center vertically */
+    background-image: url('https://s3.amazonaws.com/intranet-projects-files/holbertonschool-higher-level_programming+/268/logo.png'); /* Adjust path and image name */
+    background-size: contain;
+    background-repeat: no-repeat;
+    background-position: 20px center; /* 20px space at left */
+    display: inline-block;
+    vertical-align: middle;
+}
